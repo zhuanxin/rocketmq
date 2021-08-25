@@ -85,7 +85,7 @@ public class NamesrvController {
         this.remotingExecutor =
             Executors.newFixedThreadPool(nettyServerConfig.getServerWorkerThreads(), new ThreadFactoryImpl("RemotingExecutorThread_"));
 
-        //工作线程池注册给netty服务
+        //工作线程池注册给netty服务，处理请求
         this.registerProcessor();
 
         //定时任务，每10s摘除，120s未收到心跳的broker
@@ -149,12 +149,13 @@ public class NamesrvController {
     }
 
     private void registerProcessor() {
-        if (namesrvConfig.isClusterTest()) {
+        if (namesrvConfig.isClusterTest()) {//测试集群
 
             this.remotingServer.registerDefaultProcessor(new ClusterTestRequestProcessor(this, namesrvConfig.getProductEnvName()),
                 this.remotingExecutor);
         } else {
 
+            //请求处理组件
             this.remotingServer.registerDefaultProcessor(new DefaultRequestProcessor(this), this.remotingExecutor);
         }
     }
