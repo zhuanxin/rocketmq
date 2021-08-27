@@ -917,7 +917,7 @@ public class BrokerController {
             this.registerBrokerAll(true, false, true);
         }
 
-        //broker注册到namesrv
+        //broker注册到namesrv，每30s注册一次，相当于心跳
         this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 
             @Override
