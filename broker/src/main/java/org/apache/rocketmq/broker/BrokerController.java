@@ -236,8 +236,11 @@ public class BrokerController {
     }
 
     public boolean initialize() throws CloneNotSupportedException {
+        //加载topic
         boolean result = this.topicConfigManager.load();
 
+        //加载consumer offset，${rocketmq_home}/store/config/consumerOffset.json
+        //记录各topic 的各个messageQueue位置
         result = result && this.consumerOffsetManager.load();
         result = result && this.subscriptionGroupManager.load();
         result = result && this.consumerFilterManager.load();

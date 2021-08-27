@@ -405,18 +405,20 @@ public class RouteInfoManager {
         try {
             try {
                 this.lock.readLock().lockInterruptibly();
+                //根据topic获取messageQueue
                 List<QueueData> queueDataList = this.topicQueueTable.get(topic);
                 if (queueDataList != null) {
                     topicRouteData.setQueueDatas(queueDataList);
                     foundQueueData = true;
 
                     Iterator<QueueData> it = queueDataList.iterator();
-                    while (it.hasNext()) {
+                    while (it.hasNext()) {//根据messageQueue获取broker name
                         QueueData qd = it.next();
                         brokerNameSet.add(qd.getBrokerName());
                     }
 
                     for (String brokerName : brokerNameSet) {
+                        //根据broker name 获取broker 信息
                         BrokerData brokerData = this.brokerAddrTable.get(brokerName);
                         if (null != brokerData) {
                             BrokerData brokerDataClone = new BrokerData(brokerData.getCluster(), brokerData.getBrokerName(), (HashMap<Long, String>) brokerData

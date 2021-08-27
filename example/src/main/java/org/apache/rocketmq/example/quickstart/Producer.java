@@ -64,7 +64,7 @@ public class Producer {
                 /*
                  * Call send message to deliver message to one of brokers.
                  */
-                SendResult sendResult = producer.send(msg);
+                SendResult sendResult = producer.send(msg,1000000);
 
                 System.out.printf("%s%n", sendResult);
             } catch (Exception e) {

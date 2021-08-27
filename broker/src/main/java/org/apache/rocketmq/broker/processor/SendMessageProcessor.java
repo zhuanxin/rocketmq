@@ -261,6 +261,7 @@ public class SendMessageProcessor extends AbstractSendMessageProcessor implement
         final byte[] body = request.getBody();
 
         int queueIdInt = requestHeader.getQueueId();
+        //获取对应topic配置
         TopicConfig topicConfig = this.brokerController.getTopicConfigManager().selectTopicConfig(requestHeader.getTopic());
 
         if (queueIdInt < 0) {
@@ -290,7 +291,7 @@ public class SendMessageProcessor extends AbstractSendMessageProcessor implement
         CompletableFuture<PutMessageResult> putMessageResult = null;
         Map<String, String> origProps = MessageDecoder.string2messageProperties(requestHeader.getProperties());
         String transFlag = origProps.get(MessageConst.PROPERTY_TRANSACTION_PREPARED);
-        if (transFlag != null && Boolean.parseBoolean(transFlag)) {
+        if (transFlag != null && Boolean.parseBoolean(transFlag)) {//事务
             if (this.brokerController.getBrokerConfig().isRejectTransactionMessage()) {
                 response.setCode(ResponseCode.NO_PERMISSION);
                 response.setRemark(
